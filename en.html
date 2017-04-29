@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>ITF-2 Reception Report</title>
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/jquery.cookies.js"></script>
+  <script src="./js/tracker.js"></script>
+  <script src="./js/settings.js"></script>
+  <script src="./Build/Cesium/Cesium.js"></script>
+  <script src="./js/util.js"></script>
+  <script src="/js/3dview.js"></script>
+  <script src="/js/observer.js"></script>
+  <script src="./js/spmengine.js"></script>
+  <script src="./js/tle.js"></script>
+  <script src="/js/modernizer.js"></script>
+  <script src="/js/platform.js"></script>
+  <script src="/js/startup.js"></script>
+  <link rel="stylesheet" type="text/css" href="tracker.css"/>
+  <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+  <link rel="stylesheet" href="css/remodal.css">
+  <link rel="stylesheet" href="css/remodal-default-theme.css">
+</head>
+  <style>
+    @import url(./Build/Cesium/Widgets/widgets.css);
+    html, body {
+        width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+      #cesiumContainer {
+        width: 60%; height:60%; float:right;
+      }
+      #Container {
+        width: 100%; height: 100%; float:right; background-color: #c0c0c0;
+      }
+
+  </style>
+</head>
+<body>
+
+    <div id="Container">
+
+        <img src="./image/zentai_new.png" align="center" style="position:absolute; top:0%;height: 100%; width: 100%;" alt=""　/>
+        <img src="./image/logo_with_title.png" style="position:absolute;top:5%;left:3%;width:200px;height;200px;" alt=""　　/>
+
+        <!--モーダル-->
+        <div id="modal1" class="remodal" data-remodal-id="modal1">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <img src="./image/eisei_zentai.jpg" style="position:absolute; top:0%;left:0%;height: 100%; width: 100%;" alt=""　/>
+            <input id="det_volt" class="detblack" size=3 style="position:absolute;top:19.5%;left:15.3%;">
+            <input id="det_plusZ" class="detblack" size=3 style="position:absolute;top:19.2%;left:41.5%;">
+            <input id="det_plusY" class="detblack" size=3 style="position:absolute;top:28.7%;left:43.2%;">
+            <input id="det_tx_current_consumption" class="detblack" size=3 style="position:absolute;top:10%;left:62%;">
+            <input id="det_rx_current_consumption" class="detblack" size=3 style="position:absolute;top:15.5%;left:63.1%;">
+            <input id="det_num_of_succesful" class="detblack" size=3 style="position:absolute;top:21.5%;left:64.1%;">
+            <input id="det_supply_volt" class="detblack" size=3 style="position:absolute;top:8.2%;left:86.9%;">
+            <input id="det_current_consumption" class="detblack" size=3 style="position:absolute;top:11.7%;left:86.45%;">
+            <input id="det_minusY" class="detblack" size=3 style="position:absolute;top:26.5%;left:91%;">
+            <input id="det_minusZ" class="detblack" size=3 style="position:absolute;top:39.2%;left:89.6%;">
+            <input id="det_bat_temp_1" class="detblack" size=3 style="position:absolute;top:58%;left:15%;">
+            <input id="det_bat_temp_ave" class="detblack" size=3 style="position:absolute;top:61.5%;left:16%;">
+            <input id="det_bat_volt" class="detblack" size=3 style="position:absolute;top:65%;left:17%;">
+            <input id="det_bat_current" class="detblack" size=3 style="position:absolute;top:68.1%;left:18%;">
+            <input id="det_antenna_open" class="detblack" size=3 style="position:absolute;top:61.5%;left:40.2%;">
+            <input id="det_main_pic_current_consumption" class="detblack" size=3 style="position:absolute;top:84%;left:64.7%;">
+            <input id="det_pow_pic_current_consumption" class="detblack" size=3 style="position:absolute;top:87.9%;left:69%;">
+            <input id="det_msp_current_consumption" class="detblack" size=3 style="position:absolute;top:55.8%;left:89.7%;">
+            <input id="det_com_pic_current_consumption" class="detblack" size=3 style="position:absolute;top:59%;left:92.7%;">
+        </div>
+
+        <a data-remodal-target="modal1" href="#" style="position:absolute;top:75%;left:80%;"><font color="#ffff00">●Detailed Information</font></a>
+
+        <!--fadeで入れ替わる-->
+        <ul id="slider" class="slider" style="position:relative; top:4%">
+          <li><img src="image/eisei1.jpg" style="position:relative ;top:40;left:82%;height: 150px; width: 150px;" alt="" /></li>
+          <li><img src="image/eisei2.jpg" style="position:relative ;top:40;left:82%;height: 150px; width: 150px;" alt="" /></li>
+          <li><img src="image/eisei3.jpg" style="position:relative ;top:40;left:82%;height: 150px; width: 150px;" alt="" /></li>
+        </ul>
+
+        <table class="table1">
+            <tr>
+                <td><font size="2" color="#ffff00">Battery Temp avg</font></td><td><font id="heikinn" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  °C</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">+Y Panel Temp</font></td><td><font id="plusY" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  °C</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">-Y Panel Temp</font></td><td><font id="minusY" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  °C</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">+Z Panel Temp</font></td><td><font id="plusZ" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  °C</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">-Z Panel Temp</font></td><td><font id="minusZ" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  °C</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">Solar Cell Volt</font></td><td><font id="volt" size="2" color="#ffff00"></font><font size="2" color="#ffff00">  V</font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">Number of Succesful <br> Reception from sys.B</font></td><td><font id="kaisuu" size="2" color="#ffff00"></font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">Communication System</font></td><td><font id="keitou" size="2" color="#ffff00"></font></td>
+            </tr>
+            <tr>
+                <td><font size="2" color="#ffff00">Antenna Deployment</font></td><td><font id="joukyou" size="2" color="#ffff00"></font></td>
+            </tr>
+        </table>
+
+        <!--左-->
+        <!--<p><font style="position:absolute;top:310px;left:20px;" size="3" color="#ffff00">衛星起動時間</font></p>
+        <p><font style="position:absolute;top:340px;left:40px;" size="3" color="#ffff00">受信報告件数</font></p>
+        <p><font style="position:absolute;top:340px;left:250px;" size="3" color="#ffff00">件</font></p>
+        <form>
+        <input id="active_time" class="kidou black" name="msg" size="20">
+        <input id="report_count" class="ken black" name="msg" size="11">
+    </form>-->
+
+        <table class="table2">
+            <tr>
+                <td><font size="3" color="#ffff00">Elapsed Time</font></td><td width="10px"></td><td><font id="active_time" size="3" color="#ffff00"></font></td>
+            </tr>
+            <tr>
+                <td><font size="3" color="#ffff00">Number of Reports</font></td><td width="10px"></td><td><font id="report_count" size="3" color="#ffff00"></font></td>
+            </tr>
+            <tr>
+                <td><font size="3" color="#ffff00">Operation Phase</font></td><td width="10px"></td><td><font id="operation_phase" size="3" color="#ffff00">Init.</font></td>
+            </tr>
+        </table>
+
+        <!--中央-->
+        <p><font style="position:absolute;top:73%;left:42%;" size="6">Report Form</font></p>
+        <form>
+            <table class="table3">
+                <tr>
+                    <td><b>Lon</b></td><td><input id="keido" class="black" type="text" name="keido" size="7"></td><td style="width:10px;"></td><td><b>Lat</b></td><td><input id="ido" class="black" type="text" name="ido" size="7"></td><td style="width:10px;"></td><td><input id="pos_toggle_button" type="button" value="Set"></td>
+                </tr>
+            </table>
+            <table class="table4">
+                <tr>
+                    <td><b>Email</b></td><td><input id="email" class="black2" name="email" size="35"></td>
+                </tr>
+                <tr>
+                    <td><b>Date</b></td><td><input id="time" class="black2" name="time" size="35" value="yyyy-mm-dd hh:mm:ss"></td>
+                </tr>
+                <tr>
+                    <td><b>Received Text</b></td><td><input id="data" class="black2" name="data" size="35"></td>
+                </tr>
+            </table>
+        </form>
+
+        <table>
+            <tr>
+                <p style="position:absolute;top:85%;left:70.5%;"><font size="2"><b>Submit</b></p>
+            </tr>
+            <tr>
+                <input id="submit" type="image" src="./image/button_orange.png" style="position:absolute;top:90%;left:70%;width:50px;height:auto;">
+            </tr>
+        </table>
+
+        <div id="modal2" class="remodal" data-remodal-id="modal2" style="overflow-y:scroll;">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <img src="./image/manual-1.png" style="position:absolute; top:0%;left:0%;width: 100%;" alt=""　/>
+        </div>
+
+        <table>
+            <tr>
+                <p style="position:absolute;top:85%;left:78.5%;"><font size="2"><b>For Ham Operators</b></p>
+            </tr>
+            <tr>
+                <a href="./en.html"><img src="./image/button_green.png" style="position:absolute;top:90%;left:82%;width:50px;height:auto;"></a>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <p style="position:absolute;top:85%;left:15.3%;"><font size="2"><b>Manual</b></p>
+            </tr>
+            <tr>
+                <input id="manual" data-remodal-target="modal2"  type="image" src="./image/button_green.png" style="position:absolute;top:90%;left:15%;width:50px;height:auto;">
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <p style="position:absolute;top:85%;left:25%;"><font size="2"><b>Japanese</b></p>
+            </tr>
+            <tr>
+                <a href="./tracker.html"><img src="./image/button_green.png" style="position:absolute;top:90%;left:25%;width:50px;height:auto;"></a>
+            </tr>
+        </table>
+
+    </div>
+
+    <div id="modal_thx" class="remodal" data-remodal-id="modal_thx">
+        <button data-remodal-action="close" class="remodal-close"></button>
+        <img src="./image/thanks.png" align="center" style="auto; width: 100%;" alt=""　/>
+    </div>
+
+    <a id="modal_appear" data-remodal-target="modal_thx" href="#" style="visibility:hidden"></a>
+
+
+    <div style="position:absolute;top:7%;left:28%;width:45%;height:60%" id="cesiumContainer"></div>
+    <script>
+      var bingAPIKey = 'eYQRI0XvnhMEi5nkk3BP~d3179loNhbAIkgMvCdxjuA~Ar2FasqaLe3L9smvcOzPwDqNTaVbs7aTfGuXWRRmvMvbQHATV6aWEYX_vR86j_2F';
+      Cesium.BingMapsApi.defaultKey = bingAPIKey;
+      var viewer = new Cesium.Viewer('cesiumContainer',{
+          animation : false,
+          timeline : false
+      });
+      var english = true;
+    </script>
+
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="slick/slick.min.js"></script>
+    <script src="js/remodal.js"></script>
+    <script type="text/javascript">
+    $("#active_time").html("00h 00m 00s")
+    $('.slider').slick({
+      fade: true,
+      infinite: true,
+      arrows: false,
+      autoplay: true,
+      autoplaySpeed: 2000,
+    });
+    /*$(function() {
+      $('[data-remodal-id=notice]').remodal().open();
+    });*/
+    </script>
+
+</body>
+</html>
